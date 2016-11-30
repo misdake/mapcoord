@@ -19,7 +19,7 @@ public class Pixel {
 
     public static Pixel fromLngLat(LngLat lngLat) {
         LngLat ll = lngLat.convertTo(LngLat.Map.tmap);
-        double y = Math.log(Math.tan((90 + ll.lat) * 0.008726646259971648)) / 0.017453292519943295;
+        double y = Math.log(Math.tan((90 + ll.lat) * 0.008726646259971648)) / 0.017453292519943295 * 111319.49077777778;
         double x = ll.lng * 111319.49077777778;
         return new Pixel(x, y);
     }
