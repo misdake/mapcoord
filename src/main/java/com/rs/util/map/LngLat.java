@@ -5,11 +5,11 @@ import com.rs.util.map.amap.Tile;
 public class LngLat {
 
     public enum Map {
-        amap(System.GCJ_02),
-        bmap(System.BD_09),
-        gmap(System.GCJ_02),
-        tmap(System.GCJ_02),
-        gps(System.WGS_84);
+        amap(System.GCJ02),
+        bmap(System.BD09),
+        gmap(System.GCJ02),
+        tmap(System.GCJ02),
+        gps(System.WGS84);
 
         public final System system;
         Map(System system) {
@@ -18,9 +18,9 @@ public class LngLat {
     }
 
     public enum System {
-        WGS_84,
-        GCJ_02,
-        BD_09,
+        WGS84,
+        GCJ02,
+        BD09,
     }
 
     public final System system;

@@ -11,29 +11,29 @@ class LngLatConversion {
         if (src == null) return null;
         if (src.system == targetMap) return src;
         switch (src.system) {
-            case WGS_84:
+            case WGS84:
                 switch (targetMap) {
-                    case GCJ_02:
+                    case GCJ02:
                         return gps84_To_Gcj02(src.lat, src.lng);
-                    case BD_09:
+                    case BD09:
                         return gps84_To_Bd09(src.lat, src.lng);
                 }
                 break;
 
-            case GCJ_02:
+            case GCJ02:
                 switch (targetMap) {
-                    case WGS_84:
+                    case WGS84:
                         return gcj02_To_Gps84(src.lat, src.lng);
-                    case BD_09:
+                    case BD09:
                         return gcj02_To_Bd09(src.lat, src.lng);
                 }
                 break;
 
-            case BD_09:
+            case BD09:
                 switch (targetMap) {
-                    case WGS_84:
+                    case WGS84:
                         return bd09_To_Gps84(src.lat, src.lng);
-                    case GCJ_02:
+                    case GCJ02:
                         return bd09_To_Gcj02(src.lat, src.lng);
                 }
                 break;
@@ -58,14 +58,14 @@ class LngLatConversion {
         dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
         double mgLat = lat + dLat;
         double mgLon = lon + dLon;
-        return new LngLat(LngLat.System.GCJ_02, mgLon, mgLat);
+        return new LngLat(LngLat.System.GCJ02, mgLon, mgLat);
     }
 
     private static LngLat gcj02_To_Gps84(double lat, double lon) {
         LngLat gps = transform(lat, lon);
         double longitude = lon * 2 - gps.lng;
         double latitude = lat * 2 - gps.lat;
-        return new LngLat(LngLat.System.WGS_84, longitude, latitude);
+        return new LngLat(LngLat.System.WGS84, longitude, latitude);
     }
 
     //GCJ_02 <> BD_09
@@ -76,7 +76,7 @@ class LngLatConversion {
         double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * pi);
         double bd_lon = z * Math.cos(theta) + 0.0065;
         double bd_lat = z * Math.sin(theta) + 0.006;
-        return new LngLat(LngLat.System.BD_09, bd_lon, bd_lat);
+        return new LngLat(LngLat.System.BD09, bd_lon, bd_lat);
     }
 
     private static LngLat bd09_To_Gcj02(double bd_lat, double bd_lon) {
@@ -85,7 +85,7 @@ class LngLatConversion {
         double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * pi);
         double gg_lon = z * Math.cos(theta);
         double gg_lat = z * Math.sin(theta);
-        return new LngLat(LngLat.System.GCJ_02, gg_lon, gg_lat);
+        return new LngLat(LngLat.System.GCJ02, gg_lon, gg_lat);
     }
 
     //WGS_84 <> BD_09 via GCJ_02
@@ -115,7 +115,7 @@ class LngLatConversion {
 
     private static LngLat transform(double lat, double lon) {
         if (outOfChina(lat, lon)) {
-            return new LngLat(LngLat.System.WGS_84, lon, lat);
+            return new LngLat(LngLat.System.WGS84, lon, lat);
         }
         double dLat = transformLat(lon - 105.0, lat - 35.0);
         double dLon = transformLon(lon - 105.0, lat - 35.0);
@@ -127,7 +127,7 @@ class LngLatConversion {
         dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * pi);
         double mgLat = lat + dLat;
         double mgLon = lon + dLon;
-        return new LngLat(LngLat.System.WGS_84, mgLon, mgLat);
+        return new LngLat(LngLat.System.WGS84, mgLon, mgLat);
     }
 
     private static double transformLat(double x, double y) {
