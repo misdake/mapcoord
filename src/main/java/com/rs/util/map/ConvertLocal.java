@@ -1,7 +1,7 @@
 package com.rs.util.map;
 
 
-class LngLatConversion {
+class ConvertLocal {
 
     static LngLat convert(LngLat src, LngLat.Map targetMap) {
         return convert(src, targetMap.system);
@@ -14,16 +14,16 @@ class LngLatConversion {
             case WGS84:
                 switch (targetMap) {
                     case GCJ02:
-                        return gps84_To_Gcj02(src.lat, src.lng);
+                        return wgs84_To_Gcj02(src.lat, src.lng);
                     case BD09:
-                        return gps84_To_Bd09(src.lat, src.lng);
+                        return wgs84_To_Bd09(src.lat, src.lng);
                 }
                 break;
 
             case GCJ02:
                 switch (targetMap) {
                     case WGS84:
-                        return gcj02_To_Gps84(src.lat, src.lng);
+                        return gcj02_To_Wgs84(src.lat, src.lng);
                     case BD09:
                         return gcj02_To_Bd09(src.lat, src.lng);
                 }
@@ -32,7 +32,7 @@ class LngLatConversion {
             case BD09:
                 switch (targetMap) {
                     case WGS84:
-                        return bd09_To_Gps84(src.lat, src.lng);
+                        return bd09_To_Wgs84(src.lat, src.lng);
                     case GCJ02:
                         return bd09_To_Gcj02(src.lat, src.lng);
                 }
@@ -44,7 +44,7 @@ class LngLatConversion {
 
     //WGS_84 <> GCJ_02
 
-    private static LngLat gps84_To_Gcj02(double lat, double lon) {
+    private static LngLat wgs84_To_Gcj02(double lat, double lon) {
         if (outOfChina(lat, lon)) {
             return null;
         }
@@ -61,10 +61,10 @@ class LngLatConversion {
         return new LngLat(LngLat.System.GCJ02, mgLon, mgLat);
     }
 
-    private static LngLat gcj02_To_Gps84(double lat, double lon) {
-        LngLat gps = transform(lat, lon);
-        double longitude = lon * 2 - gps.lng;
-        double latitude = lat * 2 - gps.lat;
+    private static LngLat gcj02_To_Wgs84(double lat, double lon) {
+        LngLat wgs = transform(lat, lon);
+        double longitude = lon * 2 - wgs.lng;
+        double latitude = lat * 2 - wgs.lat;
         return new LngLat(LngLat.System.WGS84, longitude, latitude);
     }
 
@@ -90,14 +90,14 @@ class LngLatConversion {
 
     //WGS_84 <> BD_09 via GCJ_02
 
-    private static LngLat bd09_To_Gps84(double bd_lat, double bd_lon) {
+    private static LngLat bd09_To_Wgs84(double bd_lat, double bd_lon) {
         LngLat gcj02 = bd09_To_Gcj02(bd_lat, bd_lon);
-        LngLat map84 = gcj02_To_Gps84(gcj02.lat, gcj02.lng);
+        LngLat map84 = gcj02_To_Wgs84(gcj02.lat, gcj02.lng);
         return map84;
     }
 
-    private static LngLat gps84_To_Bd09(double gg_lat, double gg_lon) {
-        LngLat gcj02 = gps84_To_Gcj02(gg_lat, gg_lon);
+    private static LngLat wgs84_To_Bd09(double gg_lat, double gg_lon) {
+        LngLat gcj02 = wgs84_To_Gcj02(gg_lat, gg_lon);
         if (gcj02 == null) return null;
         LngLat bd09 = gcj02_To_Bd09(gcj02.lat, gcj02.lng);
         return bd09;
@@ -131,8 +131,7 @@ class LngLatConversion {
     }
 
     private static double transformLat(double x, double y) {
-        double ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y
-                     + 0.2 * Math.sqrt(Math.abs(x));
+        double ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
         ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
         ret += (20.0 * Math.sin(y * pi) + 40.0 * Math.sin(y / 3.0 * pi)) * 2.0 / 3.0;
         ret += (160.0 * Math.sin(y / 12.0 * pi) + 320 * Math.sin(y * pi / 30.0)) * 2.0 / 3.0;
@@ -140,12 +139,10 @@ class LngLatConversion {
     }
 
     private static double transformLon(double x, double y) {
-        double ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1
-                                                                       * Math.sqrt(Math.abs(x));
+        double ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
         ret += (20.0 * Math.sin(6.0 * x * pi) + 20.0 * Math.sin(2.0 * x * pi)) * 2.0 / 3.0;
         ret += (20.0 * Math.sin(x * pi) + 40.0 * Math.sin(x / 3.0 * pi)) * 2.0 / 3.0;
-        ret += (150.0 * Math.sin(x / 12.0 * pi) + 300.0 * Math.sin(x / 30.0
-                                                                   * pi)) * 2.0 / 3.0;
+        ret += (150.0 * Math.sin(x / 12.0 * pi) + 300.0 * Math.sin(x / 30.0 * pi)) * 2.0 / 3.0;
         return ret;
     }
 

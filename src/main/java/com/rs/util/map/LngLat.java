@@ -1,7 +1,5 @@
 package com.rs.util.map;
 
-import com.rs.util.map.amap.Tile;
-
 public class LngLat {
 
     public enum Map {
@@ -40,9 +38,22 @@ public class LngLat {
         this.lat = lat;
     }
 
+    public LngLat(double lng, double lat, Map map) {
+        if (map == null) throw new NullPointerException();
+        this.system = map.system;
+        this.lng = lng;
+        this.lat = lat;
+    }
+    public LngLat(double lng, double lat, System system) {
+        if (system == null) throw new NullPointerException();
+        this.system = system;
+        this.lng = lng;
+        this.lat = lat;
+    }
+
     @Override
     public String toString() {
-        return String.format("LngLat_%s(%s, %s)", system.name(), lng, lat);
+        return String.format("(%s, %s) @ %s", lng, lat, system.name());
     }
 
     //parsing
@@ -80,22 +91,17 @@ public class LngLat {
 
     //conversion
 
+    public LngLat convertTo_fast(Map map) {
+        return ConvertLocal.convert(this, map);
+    }
+    public LngLat convertTo_fast(System system) {
+        return ConvertLocal.convert(this, system);
+    }
+
     public LngLat convertTo(Map map) {
-        return LngLatConversion.convert(this, map);
+        return ConvertRemote.convert(this, map);
     }
     public LngLat convertTo(System system) {
-        return LngLatConversion.convert(this, system);
-    }
-
-    public Tile toAmapTile(int zoom) {
-        return Tile.fromLngLat(this, zoom);
-    }
-
-    public com.rs.util.map.bmap.Pixel toBmapPixel() {
-        return com.rs.util.map.bmap.Pixel.fromLngLat(this);
-    }
-
-    public com.rs.util.map.tmap.Pixel toTmapPixel() {
-        return com.rs.util.map.tmap.Pixel.fromLngLat(this);
+        return ConvertRemote.convert(this, system);
     }
 }

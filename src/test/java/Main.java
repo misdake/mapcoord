@@ -1,10 +1,12 @@
 import com.rs.util.map.LngLat;
+import com.rs.util.map.bmap.BmapTilePoint;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(LngLat.parse("121.584798,31.199877", LngLat.Map.tmap).convertTo(LngLat.Map.amap));
-        System.out.println(LngLat.parse("121.584798,31.199877", LngLat.Map.tmap).convertTo(LngLat.Map.bmap));
+        LngLat lngLat = new LngLat(121.588817, 31.205884, LngLat.Map.bmap);
+        BmapTilePoint bmapTilePoint = BmapTilePoint.fromLngLat(lngLat, 18);
+        System.out.println(bmapTilePoint);
     }
 
 }
