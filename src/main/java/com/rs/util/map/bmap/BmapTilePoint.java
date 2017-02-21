@@ -25,7 +25,7 @@ public class BmapTilePoint extends BmapTile {
     }
 
     public BmapPoint toBmapPoint() {
-        return new BmapPoint((tileX + px) * 256 * (1 << (18 - zoom)), (tileY + py) * 256 * (1 << (18 - zoom)));
+        return new BmapPoint((tileX * 256 + px) * (1 << (18 - zoom)), (tileY * 256 + py) * (1 << (18 - zoom)));
     }
 
     public LngLat toLngLat() {

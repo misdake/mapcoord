@@ -31,4 +31,12 @@ public class AmapTile {
         double lat = Math.toDegrees(Math.atan(Math.sinh(Math.PI - y / n * Math.PI * 2)));
         return new LngLat(LngLat.Map.amap, lng, lat);
     }
+
+
+    public LngLat toLngLat(float offsetX, float offsetY) {
+        double n = 1 << zoom;
+        double lng = (x + offsetX) / n * 360 - 180;
+        double lat = Math.toDegrees(Math.atan(Math.sinh(Math.PI - (y + offsetY) / n * Math.PI * 2)));
+        return new LngLat(LngLat.Map.amap, lng, lat);
+    }
 }
