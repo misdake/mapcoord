@@ -14,7 +14,7 @@ public class BmapTilePoint extends BmapTile {
 
     @Override
     public String toString() {
-        return String.format("(%d, %d) @ %d (%f, %f)", tileX, tileY, zoom, px, py);
+        return String.format("(%d, %d) @ %d (%f, %f)", x, y, zoom, px, py);
     }
 
     public static BmapTilePoint fromLngLat(LngLat lngLat, int zoom) {
@@ -25,7 +25,7 @@ public class BmapTilePoint extends BmapTile {
     }
 
     public BmapPoint toBmapPoint() {
-        return new BmapPoint((tileX * 256 + px) * (1 << (18 - zoom)), (tileY * 256 + py) * (1 << (18 - zoom)));
+        return new BmapPoint((x * 256 + px) * (1 << (18 - zoom)), (y * 256 + py) * (1 << (18 - zoom)));
     }
 
     public LngLat toLngLat() {

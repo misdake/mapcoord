@@ -25,13 +25,16 @@ public class AmapTile {
         return new AmapTile(x, y, zoom);
     }
 
+    public AmapGlPoint toAmapGlPoint(float glX, float glY) {
+        return new AmapGlPoint(this, glX, glY);
+    }
+
     public LngLat toLngLat() {
         double n = 1 << zoom;
         double lng = x / n * 360 - 180;
         double lat = Math.toDegrees(Math.atan(Math.sinh(Math.PI - y / n * Math.PI * 2)));
         return new LngLat(LngLat.Map.amap, lng, lat);
     }
-
 
     public LngLat toLngLat(float offsetX, float offsetY) {
         double n = 1 << zoom;
