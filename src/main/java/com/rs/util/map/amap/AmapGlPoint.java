@@ -22,10 +22,10 @@ public class AmapGlPoint {
         this.y = y;
     }
 
-    private static final double RATIO = 1 << 15;
+    private static final double RATIO = 1 << 12;
     public LngLat toLngLat() {
-        double lng = x / RATIO * 360f - 180f;
-        double lat = Math.toDegrees(Math.atan(Math.sinh(Math.PI - y / RATIO * Math.PI * 2)));
+        double lng = (tileX_12 + x) / RATIO * 360f - 180f;
+        double lat = Math.toDegrees(Math.atan(Math.sinh(Math.PI - (tileY_12 + y) / RATIO * Math.PI * 2)));
         LngLat lngLat = new LngLat(lng, lat, LngLat.Map.amap);
         return lngLat;
     }
