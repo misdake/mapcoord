@@ -104,4 +104,23 @@ public class LngLat {
     public LngLat convertTo(System system) {
         return ConvertRemote.convert(this, system);
     }
+
+    //util
+
+    public static double distanceMeter(LngLat ll1, LngLat ll2) {
+        if (ll1.system != ll2.system) {
+            ll2 = ll2.convertTo(ll1.system);
+        }
+        double radLat1 = Math.toRadians(ll1.lat);
+        double radLat2 = Math.toRadians(ll2.lat);
+        double a = radLat1 - radLat2;
+        double b = Math.toRadians(ll1.lng) - Math.toRadians(ll2.lng);
+
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        s = s * 6378137;
+        return s;
+    }
+    public double distanceMeter(LngLat other) {
+        return distanceMeter(this, other);
+    }
 }
