@@ -107,6 +107,19 @@ public class LngLat {
 
     //util
 
+    public LngLat move(double eastMeter, double southMeter) {
+        double lng = this.lng + eastMeter / (6378137 * Math.cos(Math.toRadians(lat)) * 2 * Math.PI / 360);
+        double lat = this.lat - southMeter / (6378137 * 2 * Math.PI / 360);
+        return new LngLat(this.system, lng, lat);
+    }
+
+    public static double eastDiffMeter(LngLat reference, LngLat current) {
+        return (current.lng - reference.lng) * (6378137 * Math.cos(Math.toRadians(reference.lat)) * 2 * Math.PI / 360);
+    }
+    public static double southDiffMeter(LngLat reference, LngLat current) {
+        return -(current.lat - reference.lat) * (6378137 * 2 * Math.PI / 360);
+    }
+
     public static double distanceMeter(LngLat ll1, LngLat ll2) {
         if (ll1.system != ll2.system) {
             ll2 = ll2.convertTo(ll1.system);

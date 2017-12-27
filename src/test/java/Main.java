@@ -1,21 +1,20 @@
 import com.rs.util.map.LngLat;
+import com.rs.util.map.amap.AmapGlPoint;
 import com.rs.util.map.amap.AmapTile;
-import com.rs.util.map.bmap.BmapGlPoint;
-import com.rs.util.map.bmap.BmapPoint;
-import com.rs.util.map.bmap.BmapTile;
-import com.rs.util.map.bmap.BmapTilePoint;
 
 public class Main {
 
     public static void main(String[] args) {
-        LngLat ll = new LngLat(121.475391,31.210567, LngLat.Map.amap);
-        AmapTile tile = AmapTile.fromLngLat(ll, 15);
-        LngLat ll2 = tile.toAmapGlPoint(0.1f, 0.1f).toLngLat();
-        System.out.println(tile);
+        LngLat ll = new LngLat(114.17, 22.31, LngLat.Map.amap);
+        AmapGlPoint p = AmapGlPoint.fromLngLat(ll, 20);
+        System.out.println(p);
+
+        LngLat ll1 = new LngLat(121.582319, 31.199717, LngLat.Map.amap);
+        LngLat ll2 = ll1.move(1000, 0);
         System.out.println(ll2);
 
-        double d = LngLat.distanceMeter(new LngLat(LngLat.Map.amap, 121.695248, 31.185779), new LngLat(LngLat.Map.amap, 121.697812, 31.186403));
-        System.out.println(d);
+        AmapTile amapTile = new AmapTile(24395, 16551, 15);
+        System.out.println(amapTile.toLngLat());
     }
 
 }

@@ -15,7 +15,7 @@ public class AmapTile {
 
     @Override
     public String toString() {
-        return String.format("(%d, %d) @ %d", x, y, zoom);
+        return String.format("(%d, %d)@%d", x, y, zoom);
     }
 
     public static AmapTile fromLngLat(LngLat lngLat, int zoom) {

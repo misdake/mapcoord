@@ -3,29 +3,45 @@ package com.rs.util.map.amap;
 import com.rs.util.map.LngLat;
 
 public class AmapGlPoint {
-    public final int   tileX_12;
-    public final int   tileY_12;
+    public final int   zoom;
+    public final int   tileX;
+    public final int   tileY;
     public final float x;
     public final float y;
 
     public AmapGlPoint(AmapTile tile, float x, float y) {
-        if (tile.zoom != 15) throw new IllegalArgumentException("AmapGlPoint需要zoom=15的tile");
-        tileX_12 = tile.x >> 3;
-        tileY_12 = tile.y >> 3;
+        this.tileX = tile.x;
+        this.tileY = tile.y;
+        this.zoom = tile.zoom;
         this.x = x;
         this.y = y;
     }
-    public AmapGlPoint(int tileX_z15, int tileY_z15, float x, float y) {
-        tileX_12 = tileX_z15 >> 3;
-        tileY_12 = tileY_z15 >> 3;
+    public AmapGlPoint(int tileX, int tileY, int zoom, float x, float y) {
+        this.tileX = tileX;
+        this.tileY = tileY;
+        this.zoom = zoom;
         this.x = x;
         this.y = y;
     }
 
-    private static final double RATIO = 1 << 12;
+    @Override
+    public String toString() {
+        return String.format("(%.3f, %.3f)#(%d, %d)@%d", x, y, tileX, tileY, zoom);
+    }
+
+    public static AmapGlPoint fromLngLat(LngLat lngLat, int zoom) {
+        LngLat ll = lngLat.convertTo(LngLat.Map.amap);
+        double x = (ll.lng + 180) / 360 * (1 << zoom);
+        double y = (1.0 - Math.log(Math.tan(Math.toRadians(ll.lat)) + 1.0 / Math.cos(Math.toRadians(ll.lat))) / Math.PI) / 2.0 * (1 << zoom);
+        float dx = (float) (x - Math.floor(x));
+        float dy = (float) (y - Math.floor(y));
+        return new AmapGlPoint((int) x, (int) y, zoom, dx, dy);
+    }
+
     public LngLat toLngLat() {
-        double lng = (tileX_12 + x) / RATIO * 360f - 180f;
-        double lat = Math.toDegrees(Math.atan(Math.sinh(Math.PI - (tileY_12 + y) / RATIO * Math.PI * 2)));
+        final double ratio = 1 << zoom;
+        double lng = (tileX + x) / ratio * 360f - 180f;
+        double lat = Math.toDegrees(Math.atan(Math.sinh(Math.PI - (tileY + y) / ratio * Math.PI * 2)));
         LngLat lngLat = new LngLat(lng, lat, LngLat.Map.amap);
         return lngLat;
     }
