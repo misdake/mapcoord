@@ -53,7 +53,7 @@ public class LngLat {
 
     @Override
     public String toString() {
-        return String.format("(%s, %s) @ %s", lng, lat, system.name());
+        return String.format("(%.06f, %.06f) @ %s", lng, lat, system.name());
     }
 
     //parsing
@@ -91,18 +91,11 @@ public class LngLat {
 
     //conversion
 
-    public LngLat convertTo_fast(Map map) {
-        return ConvertLocal.convert(this, map);
-    }
-    public LngLat convertTo_fast(System system) {
-        return ConvertLocal.convert(this, system);
-    }
-
     public LngLat convertTo(Map map) {
-        return ConvertRemote.convert(this, map);
+        return Convert.convert(this, map);
     }
     public LngLat convertTo(System system) {
-        return ConvertRemote.convert(this, system);
+        return Convert.convert(this, system);
     }
 
     //util
