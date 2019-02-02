@@ -21,9 +21,9 @@ public class LngLat {
         BD09,
     }
 
-    public final System system;
-    public final double lng;
-    public final double lat;
+    public System system;
+    public double lng;
+    public double lat;
 
     public LngLat(Map map, double lng, double lat) {
         if (map == null) throw new NullPointerException();

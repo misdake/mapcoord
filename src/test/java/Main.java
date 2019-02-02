@@ -5,11 +5,12 @@ import com.rs.util.map.amap.AmapTile;
 public class Main {
 
     public static void main(String[] args) {
-        LngLat ll = new LngLat(114.17, 22.31, LngLat.Map.amap);
-        System.out.println(ll);
-        System.out.println(ll.convertTo(LngLat.System.WGS84));
-        System.out.println(ll.convertTo(LngLat.System.GCJ02));
-        System.out.println(ll.convertTo(LngLat.System.BD09));
+        LngLat coordinate = new LngLat(114.17, 22.31, LngLat.Map.amap);
+        System.out.println(coordinate);
+        System.out.println(coordinate.convertTo(LngLat.System.WGS84));
+        System.out.println(coordinate.convertTo(LngLat.Map.bmap));
+        LngLat parsed = LngLat.parse("114.17, 22.31", LngLat.System.BD09);
+        System.out.println(parsed);
     }
 
 }
